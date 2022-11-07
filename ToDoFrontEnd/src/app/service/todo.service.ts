@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { TodoApiService } from '../api/todo.api.service';
 import { ToDoItem } from '../model/ToDoItem';
 import { TodoStoreService } from './todo-store.service';
 
@@ -12,7 +13,7 @@ export class TodoService {
   
   private _selectedTodoItem: ToDoItem = {} as ToDoItem;
   private _updatingTodoItem: ToDoItem = {} as ToDoItem;
-  constructor(private todoStore: TodoStoreService) {
+  constructor(private todoStore: TodoStoreService, private todoApi: TodoApiService) {
   }
 
   public get todoItems(): Array<ToDoItem> {
@@ -25,7 +26,7 @@ export class TodoService {
   
 
   public create(todoItem: ToDoItem): void {
-    this.todoStore.create(todoItem);
+    this.todoApi.create(todoItem);
   }
 
   public update(updateTodoItem: ToDoItem): void {

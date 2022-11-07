@@ -8,12 +8,16 @@ describe('TodoService', () => {
 
   let service: TodoService;
   let todoStoreService: TodoStoreService;
-  let httpClient: any;
+  let httpClientSpy: any;
 
   beforeEach(() => {
-    httpClient = jasmine.createSpyObj('HttpClient', ['post']);
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post']);
     todoStoreService = new TodoStoreService();
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers:[
+        TodoService,
+        {provide:HttpClient,useValue: httpClientSpy}]
+    });
     service = TestBed.inject(TodoService);
   });
 
@@ -29,7 +33,7 @@ describe('TodoService', () => {
     service.create(todoItem);
 
     //then
-    expect(httpClient.post).toHaveBeenCalledWith(
+    expect(httpClientSpy.post).toHaveBeenCalledWith(
       'https://635fc244ca0fe3c21aa3d012.mockapi.io/api/todos', todoItem)
     
   });
