@@ -52,7 +52,12 @@ export class TodoService {
     });
   }
   public update(updateTodoItem: ToDoItem): void {
-    this.todoStore.update(updateTodoItem);
+    this.todoApi.update(updateTodoItem).subscribe({
+      next: response => { },
+      error: error => {
+        this.errorMessage = error.errorMessage
+      }
+    });
   }
 
   

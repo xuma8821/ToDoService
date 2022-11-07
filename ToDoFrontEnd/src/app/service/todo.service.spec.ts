@@ -12,7 +12,7 @@ describe('TodoService', () => {
   let httpClientSpy: any;
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post','delete','get']);
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post','delete','get','put']);
     todoStoreService = new TodoStoreService();
     TestBed.configureTestingModule({
       providers:[
@@ -25,7 +25,6 @@ describe('TodoService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
   it('should create todoItem via mockHttp post', () => {
     // given
     const todoItem = new ToDoItem(8,'title','decription', true);
@@ -39,16 +38,29 @@ describe('TodoService', () => {
       "https://localhost:44309/ToDos", todoItem)
     
   });
+  // it('should create todoItem via mockHttp post', () => {
+  //   // given
+  //   const todoItem = new ToDoItem(8,'title','decription', true);
+  //   httpClientSpy.post.and.returnValue(of({}))
+
+  //   // when
+  //   service.create(todoItem);
+
+  //   //then
+  //   expect(httpClientSpy.post).toHaveBeenCalledWith(
+  //     "https://localhost:44309/ToDos", todoItem)
+    
+  // });
   it('should response err when create fail', () => {
     // given
     const todoItem = new ToDoItem(8,'title','decription', true);
-    httpClientSpy.post.and.returnValue(throwError(()=>({errorMessage:"Created failed"})));
+    httpClientSpy.post.and.returnValue(throwError(()=>({errorMessage:'Created failed'})));
 
     // when
     service.create(todoItem);
 
     //then
-    expect(service.errorMessage).toEqual("Created failed");
+    expect(service.errorMessage).toEqual('Created failed');
     
   });
 
@@ -61,19 +73,19 @@ describe('TodoService', () => {
 
     //then
     expect(httpClientSpy.delete).toHaveBeenCalledWith(
-      "https://localhost:44309/ToDos?1")
+      'https://localhost:44309/ToDos?1')
     
   });
 
   it('should throw err msg when delete toDoItem fail', () => {
     // given
-    httpClientSpy.delete.and.returnValue(throwError(()=>({errorMessage:"Delete failed"})));
+    httpClientSpy.delete.and.returnValue(throwError(()=>({errorMessage:'Delete failed'})));
 
     // when
     service.delete(1);
 
     //then
-    expect(service.errorMessage).toEqual("Delete failed");
+    expect(service.errorMessage).toEqual('Delete failed');
     
   });
 
@@ -87,20 +99,20 @@ describe('TodoService', () => {
 
     //then
     expect(httpClientSpy.get).toHaveBeenCalledWith(
-      "https://localhost:44309/ToDos/8");
+      'https://localhost:44309/ToDos/8');
     targetItem.subscribe((res)=>{expect(res.id).toBe(8)});
     
   });
 
   it('should throw err message when failed to find todoItem with id', () => {
     // given
-    httpClientSpy.get.and.returnValue(throwError(()=>({errorMessage:"Not found"})));
+    httpClientSpy.get.and.returnValue(throwError(()=>({errorMessage:'Not found'})));
 
     // when
     const targetItem = service.findById(1);
 
     //then
-    targetItem.subscribe(() => {},(throwError)=>{expect(service.errorMessage).toEqual("Not found");});
+    targetItem.subscribe(() => {},(throwError)=>{expect(service.errorMessage).toEqual('Not found');});
     
   });
   it('should find todoItems', () => {
@@ -113,5 +125,18 @@ describe('TodoService', () => {
 
     //then;
     targetItems.subscribe((res)=>{expect(res.length).toBe(1)});    
+  });
+
+  it('should update todoItems', () => {
+    // given
+    const todoItem = new ToDoItem(8,'title','decription', true);
+    httpClientSpy.put.and.returnValue(of({}));
+
+    // when
+    const targetItems = service.update(todoItem);
+
+    //then;
+    expect(httpClientSpy.put).toHaveBeenCalledWith(
+      'https://localhost:44309/ToDos', todoItem)  
   });
 });
