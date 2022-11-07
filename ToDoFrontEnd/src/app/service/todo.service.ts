@@ -59,22 +59,4 @@ export class TodoService {
       }
     });
   }
-
-  
-
-  public selectTodoItem(id: number): void {
-    this._selectedTodoItem = this.todoStore.findById(id);
-  }
-
-  public selectTodoItemForUpdate(id: number): void {
-    this._updatingTodoItem = Object.assign({}, this.todoStore.findById(id));
-  }
-
-  public currentTodoItem(): ToDoItem {
-    return this._selectedTodoItem;
-  }
-
-  public currentUpdatingTodoItem(): ToDoItem {
-    return this._updatingTodoItem;
-  }
 }
