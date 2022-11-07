@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ToDoItem } from '../model/ToDoItem';
 import { TodoStoreService } from './todo-store.service';
 
@@ -7,7 +9,7 @@ import { TodoStoreService } from './todo-store.service';
 })
 export class TodoService {
 
-  // private baseApi='https://localhost:44309/ToDos/';
+  //private baseApi='https://localhost:44309/ToDos/';
   private _selectedTodoItem: ToDoItem = {} as ToDoItem;
   private _updatingTodoItem: ToDoItem = {} as ToDoItem;
   constructor(private todoStore: TodoStoreService) {
@@ -16,6 +18,13 @@ export class TodoService {
   public get todoItems(): Array<ToDoItem> {
     return this.todoStore.getAll();
   }
+
+  findById(id: number):ToDoItem{
+    return this.todoStore.findById(id);
+  }
+  // public todoItems(): Observable<ToDoItem[]> {
+  //   return this.http.get<ToDoItem[]>(this.baseApi);
+  // }
 
   public create(todoItem: ToDoItem): void {
     this.todoStore.create(todoItem);

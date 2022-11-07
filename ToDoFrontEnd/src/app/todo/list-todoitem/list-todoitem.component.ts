@@ -10,6 +10,7 @@ import { TodoService } from '../../service/todo.service';
 })
 export class ListTodoitemComponent implements OnInit {
 
+  //toDoItems: ToDoItem[] =[];
   public get toDoItems(): ToDoItem[] {
     return this.todoService.todoItems;
   }
@@ -18,7 +19,11 @@ export class ListTodoitemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //this.loadData();
   }
+  // public loadData():void{
+  //   this.todoService.todoItems().subscribe(res=>{this.toDoItems=res});
+  // }
 
   public detail(id: number): void {
     this.router.navigate(["/todos",id]);

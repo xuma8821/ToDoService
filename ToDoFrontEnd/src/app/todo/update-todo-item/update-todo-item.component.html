@@ -2,12 +2,12 @@
 
 <form>
     <label>Id</label>
-    <h4>{{todoItem.id}}</h4>
+    <h4>{{toDoItem.id}}</h4>
     <label>Title: </label>
-    <input type="text" name="title" [(ngModel)]="todoItem.title">
+    <input type="text" name="title" [(ngModel)]="toDoItem.title">
     <label>Description: </label>
-    <input type="text" name="description" [(ngModel)]="todoItem.description">
+    <input type="text" name="description" [(ngModel)]="toDoItem.description">
     <label>IsDone</label>
-    <input type="checkbox" name="isDone" [(ngModel)]="todoItem.isDone">
+    <input type="checkbox" name="isDone" [(ngModel)]="toDoItem.isDone">
     <button type="submit" (click)="update()">Submit</button>
 </form>
