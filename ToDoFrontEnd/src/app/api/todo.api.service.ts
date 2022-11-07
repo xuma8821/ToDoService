@@ -15,8 +15,9 @@ export class TodoApiService {
   public getAll(): Observable<ToDoItem[]> {
     return this.http.get<ToDoItem[]>(this.baseApi);
   }
-  delete(id:number): Observable<void>{
-    return this.http.delete<void>(`${this.baseApi}?${id}`);
+  delete(id:number): Observable<any>{
+    // return this.http.delete<any>(`${this.baseApi}`,{params:{id}});
+    return this.http.delete<any>(`${this.baseApi}?id=${id}`);
 
   }
   findById(id:number):Observable<ToDoItem>{

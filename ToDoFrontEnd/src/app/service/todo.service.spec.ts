@@ -25,6 +25,7 @@ describe('TodoService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+  
   it('should create todoItem via mockHttp post', () => {
     // given
     const todoItem = new ToDoItem(8,'title','decription', true);
@@ -38,19 +39,6 @@ describe('TodoService', () => {
       "https://localhost:44309/ToDos", todoItem)
     
   });
-  // it('should create todoItem via mockHttp post', () => {
-  //   // given
-  //   const todoItem = new ToDoItem(8,'title','decription', true);
-  //   httpClientSpy.post.and.returnValue(of({}))
-
-  //   // when
-  //   service.create(todoItem);
-
-  //   //then
-  //   expect(httpClientSpy.post).toHaveBeenCalledWith(
-  //     "https://localhost:44309/ToDos", todoItem)
-    
-  // });
   it('should response err when create fail', () => {
     // given
     const todoItem = new ToDoItem(8,'title','decription', true);
@@ -73,7 +61,7 @@ describe('TodoService', () => {
 
     //then
     expect(httpClientSpy.delete).toHaveBeenCalledWith(
-      'https://localhost:44309/ToDos?1')
+      'https://localhost:44309/ToDos?id=1')
     
   });
 
