@@ -12,7 +12,7 @@ describe('TodoService', () => {
   let httpClientSpy: any;
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post']);
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post','delete']);
     todoStoreService = new TodoStoreService();
     TestBed.configureTestingModule({
       providers:[
@@ -36,7 +36,7 @@ describe('TodoService', () => {
 
     //then
     expect(httpClientSpy.post).toHaveBeenCalledWith(
-      'https://635fc244ca0fe3c21aa3d012.mockapi.io/api/todos', todoItem)
+      "https://localhost:44309/ToDos", todoItem)
     
   });
   it('should response err when create fail', () => {
@@ -49,6 +49,31 @@ describe('TodoService', () => {
 
     //then
     expect(service.errorMessage).toEqual("Created failed");
+    
+  });
+
+  it('should delete toDoItem', () => {
+    // given
+    httpClientSpy.delete.and.returnValue(of({}));
+
+    // when
+    service.delete(1);
+
+    //then
+    expect(httpClientSpy.delete).toHaveBeenCalledWith(
+      "https://localhost:44309/ToDos?1")
+    
+  });
+
+  it('should throw err msg when delete toDoItem fail', () => {
+    // given
+    httpClientSpy.delete.and.returnValue(throwError(()=>({errorMessage:"Delete failed"})));
+
+    // when
+    service.delete(1);
+
+    //then
+    expect(service.errorMessage).toEqual("Delete failed");
     
   });
 });

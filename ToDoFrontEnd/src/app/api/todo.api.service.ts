@@ -7,7 +7,7 @@ import { ToDoItem } from '../model/ToDoItem';
   providedIn: 'root'
 })
 export class TodoApiService {
-  private baseApi= "https://635fc244ca0fe3c21aa3d012.mockapi.io/api/todos";
+  private baseApi= "https://localhost:44309/ToDos";
   constructor(private http: HttpClient) { }
   create(toDoItem: ToDoItem): Observable<void>{
     return this.http.post<void>(this.baseApi,toDoItem);
@@ -15,4 +15,8 @@ export class TodoApiService {
   // public todoItems(): Observable<ToDoItem[]> {
   //   return this.http.get<ToDoItem[]>(this.baseApi);
   // }
+  delete(id:number): Observable<void>{
+    return this.http.delete<void>(`${this.baseApi}?${id}`);
+
+  }
 }
