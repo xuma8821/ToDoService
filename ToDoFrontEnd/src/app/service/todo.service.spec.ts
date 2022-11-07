@@ -103,4 +103,15 @@ describe('TodoService', () => {
     targetItem.subscribe(() => {},(throwError)=>{expect(service.errorMessage).toEqual("Not found");});
     
   });
+  it('should find todoItems', () => {
+    // given
+    const todoItems = [new ToDoItem(8,'title','decription', true)];
+    httpClientSpy.get.and.returnValue(of(todoItems));
+
+    // when
+    const targetItems = service.findAllItems();
+
+    //then;
+    targetItems.subscribe((res)=>{expect(res.length).toBe(1)});    
+  });
 });

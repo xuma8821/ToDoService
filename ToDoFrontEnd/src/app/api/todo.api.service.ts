@@ -12,9 +12,9 @@ export class TodoApiService {
   create(toDoItem: ToDoItem): Observable<void>{
     return this.http.post<void>(this.baseApi,toDoItem);
   }
-  // public todoItems(): Observable<ToDoItem[]> {
-  //   return this.http.get<ToDoItem[]>(this.baseApi);
-  // }
+  public getAll(): Observable<ToDoItem[]> {
+    return this.http.get<ToDoItem[]>(this.baseApi);
+  }
   delete(id:number): Observable<void>{
     return this.http.delete<void>(`${this.baseApi}?${id}`);
 

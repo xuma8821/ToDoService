@@ -17,8 +17,13 @@ export class TodoService {
   constructor(private todoStore: TodoStoreService, private todoApi: TodoApiService) {
   }
 
-  public get todoItems(): Array<ToDoItem> {
-    return this.todoStore.getAll();
+  public findAllItems(): Observable<ToDoItem[]> {
+    return this.todoApi.getAll().pipe(
+      catchError((err) => {
+        this.errorMessage = err.errorMessage;
+        return throwError(() => err);
+      })
+    );;
   }
 
   findById(id: number):Observable<ToDoItem>{
