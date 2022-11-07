@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { TodoApiService } from '../api/todo.api.service';
 import { ToDoItem } from '../model/ToDoItem';
 import { TodoStoreService } from './todo-store.service';
@@ -21,8 +21,13 @@ export class TodoService {
     return this.todoStore.getAll();
   }
 
-  findById(id: number):ToDoItem{
-    return this.todoStore.findById(id);
+  findById(id: number):Observable<ToDoItem>{
+    return this.todoApi.findById(id).pipe(
+      catchError((err) => {
+        this.errorMessage = err.errorMessage;
+        return throwError(() => err);
+      })
+    );
   }
 
   public create(todoItem: ToDoItem): void {

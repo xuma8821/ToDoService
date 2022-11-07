@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { ToDoItem } from '../model/ToDoItem';
 import { TodoStoreService } from './todo-store.service';
@@ -12,7 +12,7 @@ describe('TodoService', () => {
   let httpClientSpy: any;
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post','delete']);
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post','delete','get']);
     todoStoreService = new TodoStoreService();
     TestBed.configureTestingModule({
       providers:[
@@ -74,6 +74,33 @@ describe('TodoService', () => {
 
     //then
     expect(service.errorMessage).toEqual("Delete failed");
+    
+  });
+
+  it('should find todoItem with id', () => {
+    // given
+    const todoItem = new ToDoItem(8,'title','decription', true);
+    httpClientSpy.get.and.returnValue(of(todoItem));
+
+    // when
+    const targetItem = service.findById(8);
+
+    //then
+    expect(httpClientSpy.get).toHaveBeenCalledWith(
+      "https://localhost:44309/ToDos/8");
+    targetItem.subscribe((res)=>{expect(res.id).toBe(8)});
+    
+  });
+
+  it('should throw err message when failed to find todoItem with id', () => {
+    // given
+    httpClientSpy.get.and.returnValue(throwError(()=>({errorMessage:"Not found"})));
+
+    // when
+    const targetItem = service.findById(1);
+
+    //then
+    targetItem.subscribe(() => {},(throwError)=>{expect(service.errorMessage).toEqual("Not found");});
     
   });
 });
