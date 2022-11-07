@@ -13,6 +13,7 @@ export class TodoService {
   
   private _selectedTodoItem: ToDoItem = {} as ToDoItem;
   private _updatingTodoItem: ToDoItem = {} as ToDoItem;
+  errorMessage?: string;
   constructor(private todoStore: TodoStoreService, private todoApi: TodoApiService) {
   }
 
@@ -23,10 +24,14 @@ export class TodoService {
   findById(id: number):ToDoItem{
     return this.todoStore.findById(id);
   }
-  
 
   public create(todoItem: ToDoItem): void {
-    this.todoApi.create(todoItem);
+    this.todoApi.create(todoItem).subscribe({
+      next: response => { },
+      error: error => {
+        this.errorMessage = error.errorMessage
+      }
+    })
   }
 
   public update(updateTodoItem: ToDoItem): void {
